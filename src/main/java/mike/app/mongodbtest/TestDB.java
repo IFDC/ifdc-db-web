@@ -18,8 +18,8 @@ import org.bson.Document;
 import org.slf4j.LoggerFactory;
 import spark.ModelAndView;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+//import com.zaxxer.hikari.HikariConfig;
+//import com.zaxxer.hikari.HikariDataSource;
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
 import static spark.Spark.*;
@@ -47,10 +47,10 @@ public class TestDB {
             return new ModelAndView(attributes, "index.ftl");
         }, new FreeMarkerEngine());
 
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(System.getenv("JDBC_DATABASE_URL"));
-        final HikariDataSource dataSource = (config.getJdbcUrl() != null)
-                ? new HikariDataSource(config) : new HikariDataSource();
+//        HikariConfig config = new HikariConfig();
+//        config.setJdbcUrl(System.getenv("JDBC_DATABASE_URL"));
+//        final HikariDataSource dataSource = (config.getJdbcUrl() != null)
+//                ? new HikariDataSource(config) : new HikariDataSource();
 
         get("/db", (req, res) -> {
             Map<String, Object> attributes = new HashMap<>();
