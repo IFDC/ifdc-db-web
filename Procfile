@@ -1,1 +1,1 @@
-web:    java -jar target/mongodbtest.jar
+web:    java -jar target/ifdc-db-web.jar
