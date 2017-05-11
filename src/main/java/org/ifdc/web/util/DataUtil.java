@@ -1,10 +1,13 @@
 package org.ifdc.web.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import static org.ifdc.web.Main.LOG;
 
 /**
@@ -33,6 +36,14 @@ public class DataUtil {
             e.printStackTrace();
         }
 
+    }
+    
+    public HashMap<String, Object> toMap(Object data) throws JsonProcessingException, IOException {
+        
+        ObjectMapper mapper = new ObjectMapper();
+        String reqJson = mapper.writeValueAsString(data);
+        HashMap<String, Object> ret = mapper.readValue(reqJson, HashMap.class);
+        return ret;
     }
     
     public static String revisePath(String path) {

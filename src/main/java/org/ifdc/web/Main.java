@@ -2,6 +2,7 @@ package org.ifdc.web;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import org.ifdc.web.controller.ActivityPageController;
 import org.ifdc.web.controller.PageController;
 import org.ifdc.web.util.Filters;
 import org.ifdc.web.util.Path;
@@ -51,12 +52,18 @@ public class Main {
         get("/",                     PageController.serveIndexPage);
 //        get(Path.Web.BOOKS,          BookController.fetchAllBooks);
 //        get(Path.Web.ONE_BOOK,       BookController.fetchOneBook);
+        get(Path.Web.REGISTER,       PageController.serveRegisterPage);
+        post(Path.Web.REGISTER,      PageController.handleRegisterPost);
         get(Path.Web.LOGIN,          PageController.serveLoginPage);
         post(Path.Web.LOGIN,         PageController.handleLoginPost);
-        get(Path.Web.LOGOUT,        PageController.handleLogoutRequest);
+        get(Path.Web.LOGOUT,         PageController.handleLogoutRequest);
         post(Path.Web.LOGOUT,        PageController.handleLogoutRequest);
-        get(Path.Web.UPLOAD,        PageController.serveUploadPage);
-        post(Path.Web.UPLOAD,        PageController.handleUploadPost);
+//        get(Path.Web.UPLOAD,        PageController.serveUploadPage);
+//        post(Path.Web.UPLOAD,        PageController.handleUploadPost);
+        get(Path.Web.Activity.CREATE,               ActivityPageController.serveCreatePage);
+        post(Path.Web.Activity.CREATE,              ActivityPageController.handleCreatePost);
+//        get(Path.Web.Activity.CREATE_DETAIL,       ActivityPageController.handleCreateDetailGet);
+//        post(Path.Web.Activity.CREATE_DETAIL,       ActivityPageController.handleCreateDetailPost);
         get("*",                     PageController.serveNotFoundPage, new FreeMarkerEngine());
 
         //Set up after-filters (called after each get/post)

@@ -11,8 +11,11 @@
 <div class="container">
   <p> ${message}, ${username}</p>
   <div class="links">
-      <ul>
+<!--      <ul>
           <li><a href="/upload">UPLOAD PAGE</a></li>
+      </ul>-->
+      <ul>
+          <li><a href="/activity/create">Create New M&E Activity</a></li>
       </ul>
   </div>
 </div>

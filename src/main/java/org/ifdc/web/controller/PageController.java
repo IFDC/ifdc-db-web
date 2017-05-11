@@ -26,9 +26,33 @@ public class PageController {
     };
 
     public static TemplateViewRoute serveNotFoundPage = (Request request, Response response) -> {
-        LOG.info("Serve Not Found Page");
+//        LOG.info("Serve Not Found Page");
         Map<String, Object> attributes = new HashMap<>();
         return new ModelAndView(attributes, Path.Template.NOT_FOUND);
+    };
+
+    public static Route serveRegisterPage = (Request request, Response response) -> {
+        LOG.info("Serve Register Page");
+        Map<String, Object> attributes = new HashMap<>();
+        return ViewUtil.getRegisterPage(request, attributes);
+    };
+
+    public static Route handleRegisterPost = (Request request, Response response) -> {
+        LOG.info("Handle Register Post");
+        Map<String, Object> attributes = new HashMap<>();
+        String username = request.queryParams("username");
+        String password = request.queryParams("password");
+        if (!UserController.register(username, password)) {
+            attributes.put("operation_result", "Failed");
+            return ViewUtil.getRegisterPage(request, attributes);
+        }
+        request.session().attribute("currentUser", username);
+//        if (getQueryLoginRedirect(request) != null) {
+//            response.redirect(getQueryLoginRedirect(request));
+//        }
+        response.redirect(Path.Web.INDEX);
+        
+        return ViewUtil.getIndexPage(request, attributes);
     };
 
     public static Route serveLoginPage = (Request request, Response response) -> {
@@ -43,7 +67,7 @@ public class PageController {
         String username = request.queryParams("username");
         String password = request.queryParams("password");
         if (!UserController.authenticate(username, password)) {
-            attributes.put("authentication", "Failed");
+            attributes.put("operation_result", "Failed");
             return ViewUtil.getLoginPage(request, attributes);
         }
         request.session().attribute("currentUser", username);
@@ -84,7 +108,6 @@ public class PageController {
             response.redirect(Path.Web.LOGIN);
             return ViewUtil.getLoginPage(request, attributes);
         }
-        
         
         request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
         Part file = request.raw().getPart("file");
