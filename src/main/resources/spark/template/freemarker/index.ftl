@@ -57,8 +57,12 @@
         <div class="container">
 
             <div class="container-fluid text-center">
-                <h3>Where To Find Me?</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <h3>How I build this prototype</h3>
+                <p>Using MongoDB Atlas for DB server</p>
+                <p>Using Heroku for web content and DB API server</p>
+                <p>Using Bootstrap to for web UI design</p>
+                <p>Using Jersey and MongoDB Java Driver to create DB API</p>
+                <p>Using Spark framework to create web UI</p>
             </div>
 
         </div>
