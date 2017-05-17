@@ -1,6 +1,7 @@
-package org.ifdc.web.util;
+package org.ifdc.web.view;
 
 import java.util.Map;
+import org.ifdc.web.util.Path;
 import static org.ifdc.web.Main.LOG;
 import spark.ModelAndView;
 import spark.Request;

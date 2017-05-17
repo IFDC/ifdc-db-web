@@ -1,18 +1,18 @@
 package org.ifdc.web.dao;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import org.eclipse.jetty.util.ConcurrentHashSet;
-import org.ifdc.web.dao.bean.Activity;
-import org.ifdc.web.dao.bean.Indicator;
+import org.ifdc.web.dao.bean.Project;
 import org.ifdc.web.util.DBUtil;
 import org.ifdc.web.util.JsonUtil;
 
@@ -20,28 +20,22 @@ import org.ifdc.web.util.JsonUtil;
  *
  * @author Meng Zhang
  */
-public class ActivityDAO {
+public class ProjectDAO {
 
-    private static final ConcurrentHashSet<String> crops = syncRecords("crop");
-    private static final ConcurrentHashSet<String> techs = syncRecords("tech");
+    private static final ConcurrentHashSet<String> projectNames = syncRecords("project");
 
-    public static ConcurrentHashMap<String, Indicator> initalize() {
-        ConcurrentHashMap<String, Indicator> ret = new ConcurrentHashMap();
-        ret.put("AUIT", new Indicator());
-        return ret;
-    }
-    
     public static ConcurrentHashSet<String> syncRecords(String dataType) {
         ConcurrentHashSet<String> ret = new ConcurrentHashSet();
 
         try {
             Client client = ClientBuilder.newClient();
             WebTarget service = client.target(DBUtil.getDBBaseURI());
-            Response response = service.path("me").path("activity").path("list" + dataType).request().get();
+            Response response = service.path("me").path(dataType).path("listname").request().get();
             if (response.getStatus() == 200) {
                 String resJson = response.readEntity(String.class);
                 if (!resJson.trim().equals("")) {
-                    ret.addAll(JsonUtil.toList(resJson));
+                    ObjectMapper mapper = new ObjectMapper();
+                    ret.addAll(mapper.readValue(resJson, ArrayList.class));
                 }
             }
         } catch (Exception ex) {
@@ -51,61 +45,64 @@ public class ActivityDAO {
     }
     
     public static ArrayList<HashMap> list() {
-        ArrayList<HashMap> ret = new ArrayList();
         try {
             Client client = ClientBuilder.newClient();
             WebTarget service = client.target(DBUtil.getDBBaseURI());
-            Response response = service.path("me").path("activity").path("list")
+            Response response = service.path("me").path("project").path("list")
                     .request().get();
             if (response.getStatus() == 200) {
                 String json = response.readEntity(String.class);
-                ret.addAll(JsonUtil.toList(json));
+                return JsonUtil.toObject(json, new TypeReference<ArrayList<HashMap>>() {});
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return ret;
+        return new ArrayList();
     }
     
-    public static ArrayList<HashMap> search(String projName) {
-        ArrayList<HashMap> ret = new ArrayList();
-        if (projName == null || projName.isEmpty()) {
-            return ret;
+    public static boolean isNameExist(String projName) {
+        return projName != null && !projName.isEmpty() && projectNames.contains(projName);
+    }
+    
+    public static List<String> listNames() {
+        return Arrays.asList(projectNames.toArray(new String[]{}));
+    }
+    
+    public static HashMap find(String id) {
+        if (id == null || id.isEmpty()) {
+            return new HashMap();
         }
         try {
             Client client = ClientBuilder.newClient();
             WebTarget service = client.target(DBUtil.getDBBaseURI());
-            Response response = service.path("me").path("activity").path("search")
-                    .queryParam("project_name", projName)
+            Response response = service.path("me").path("project").path("find")
+                    .queryParam("id", id)
                     .request().get();
             if (response.getStatus() == 200) {
                 String json = response.readEntity(String.class);
-                ret.addAll(JsonUtil.toList(json));
+                return JsonUtil.toMap(json);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return ret;
+        return new HashMap();
     }
 
-    public static boolean add(Activity activity) {
-        String name = activity.getProject();
-        String crop = activity.getCrop();
-        String tech = activity.getTech();
+    public static boolean add(Project project) {
+        String name = project.getName();
+        String description = project.getDescription();
         if (name == null || name.isEmpty()) {
             return false;
         } else {
             try {
                 Client client = ClientBuilder.newClient();
                 WebTarget service = client.target(DBUtil.getDBBaseURI());
-                Response response = service.path("me").path("activity").path("add")
-                        .queryParam("project_name", name)
-                        .queryParam("crop", crop)
-                        .queryParam("tech", tech)
+                Response response = service.path("me").path("project").path("add")
+                        .queryParam("name", name)
+                        .queryParam("description", description)
                         .request().get();
                 if (response.getStatus() == 200) {
-                    crops.add(crop);
-                    techs.add(tech);
+                    projectNames.add(name);
                     String id = response.readEntity(String.class);
                     if (id != null && !id.equals("-1") && !id.equals("-2")) {
                         return true;
@@ -118,13 +115,5 @@ public class ActivityDAO {
             }
             return false;
         }
-    }
-
-    public static List<String> getCropList() {
-        return Arrays.asList(crops.toArray(new String[]{}));
-    }
-
-    public static List<String> getTechnologyList() {
-        return Arrays.asList(techs.toArray(new String[]{}));
     }
 }

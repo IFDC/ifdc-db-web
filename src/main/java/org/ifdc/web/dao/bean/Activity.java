@@ -1,9 +1,8 @@
 package org.ifdc.web.dao.bean;
 
-//import java.util.Arrays;
 import java.util.HashMap;
-//import java.util.List;
-//import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+import spark.Request;
 
 /**
  *
@@ -11,47 +10,34 @@ import java.util.HashMap;
  */
 public class Activity extends HashMap<String, String> {
     
-//    private static final ConcurrentHashMap<String, Indicator> indicators = new ConcurrentHashMap();
-//    
-//    public List<Indicator> getIndicators() {
-//        return Arrays.asList(indicators.values().toArray(new Indicator[]{}));
-//    }
-//    
-//    public Indicator getIndicator(String indicatorId) {
-//        return indicators.get(indicatorId);
-//    }
+    public Activity(Request request) {
+        this.put("project_name", request.queryParams("project_name"));
+        this.put("crop", request.queryParams("crop"));
+        this.put("tech", request.queryParams("tech"));
+    }
+    
+    public Activity(String projName, String crop, String tech) {
+        super();
+        this.put("project_name", projName);
+        this.put("crop", crop);
+        this.put("tech", tech);
+    }
+    
+    public static Activity toActivity(Map m) {
+        Activity ret = new Activity((String) m.get("project_name"), (String) m.get("crop"), (String) m.get("tech"));
+        ret.putAll(m);
+        return ret;
+    }
     
     public String getProject() {
-        return get("project");
+        return get("project_name");
     }
     
     public String getCrop() {
         return get("crop");
     }
     
-    public String getTechnology() {
-        return get("technology");
+    public String getTech() {
+        return get("tech");
     }
-    
-    public String getYear() {
-        return get("year");
-    }
-    
-    public String getIndicatorValue(String indicatorId) {
-        return getIndicatorValue(indicatorId, "");
-    }
-
-    public String getIndicatorValue(String indicatorId, String defVal) {
-        String ret = this.get(indicatorId);
-        if (ret == null) {
-            return defVal;
-        } else {
-            return ret;
-        }
-    }
-//    
-//    
-//    public boolean putIndicatorValue(String indicatorId, String indicatorValue) {
-//        
-//    }
 }

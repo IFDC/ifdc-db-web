@@ -8,7 +8,7 @@ import javax.servlet.http.Part;
 import static org.ifdc.web.Main.LOG;
 import org.ifdc.web.util.DataUtil;
 import org.ifdc.web.util.Path;
-import org.ifdc.web.util.ViewUtil;
+import org.ifdc.web.view.ViewUtil;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

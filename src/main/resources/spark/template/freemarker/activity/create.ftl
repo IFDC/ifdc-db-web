@@ -3,6 +3,12 @@
     <head>
         <#include "../header.ftl">
     </head>
+    <style>
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
 
     <body>
 
@@ -11,17 +17,25 @@
         <div class="container">
 
             <#if operation_result == "Failed" >
-            <p>Activity Already Exist</p>
-            <#elseif operation_result == "Succeeded" >
-            <p>Activity Created</p>
+            <p>${error_message!"Activity Already Exist"}</p>
             </#if>
             <form id="createActivityForm" method="post">
                 <fieldset>
-                    <legend>Create New M&E Activity</legend>
+                    <legend>Create New Activity</legend>
                     <table>
                         <tr>
                             <td><label>Project : </label></td>
-                            <td><input list="projects" name="project" placeholder="Project Name" value="${project!}" required></td>
+                            <#if project_name??>
+                            <td><input type="hidden" name="project_name" value="${project_name!}" required>${project_name!}</td>
+                            <#else>
+                            <td>
+                                <select name="project_name" required>
+                                    <#list projects as x>
+                                    <option value="${x}">${x}</option>
+                                    </#list>
+                                </select>
+                            </td>
+                            </#if>
                         </tr>
                         <tr>
                             <td><label>Crop : </label></td>
@@ -29,17 +43,12 @@
                         </tr>
                         <tr>
                             <td><label>Technology : </label></td>
-                            <td><input list="Technologies" name="technology" placeholder="Technology Code" value="${technology!}" required></td>
+                            <td><input list="Technologies" name="tech" placeholder="Technology Code" value="${tech!}" required></td>
                         </tr>
                         <tr>
                             <td><input type="submit" value="Create"></td>
                         </tr>
                     </table>
-                    <datalist id="projects">
-                        <#list projects as x>
-                        <option value="${x}">
-                        </#list>
-                    </datalist>
                     <datalist id="crops">
                         <#list crops as x>
                         <option value="${x}">
@@ -53,6 +62,7 @@
                 </fieldset>
             </form>
         </div>
+        <#include "../footer.ftl">
 
     </body>
 </html>
