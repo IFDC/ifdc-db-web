@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <#include "header.ftl">
-</head>
+    <head>
+        <#include "header.ftl">
+    </head>
 
-<body>
+    <body>
 
-  <#include "nav.ftl">
+        <#include "nav.ftl">
 
-<div class="container">
-  ${message}
-</div>
+        <div class="container">
+            ${message}
+        </div>
 
-</body>
+
+        <#include "footer.ftl">
+    </body>
 </html>

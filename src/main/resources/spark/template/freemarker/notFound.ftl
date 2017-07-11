@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <#include "header.ftl">
-</head>
+    <head>
+        <#include "header.ftl">
+    </head>
 
-<body>
+    <body>
 
-  <#include "nav.ftl">
+        <#include "nav.ftl">
 
-<div class="container">
+        <div class="container">
 
-    <h1>PAGE NOT FOUND (404)</h1>
-    
-</div>
+            <h1>PAGE NOT FOUND (404)</h1>
 
-</body>
+        </div>
+
+        <#include "footer.ftl">
+    </body>
 </html>

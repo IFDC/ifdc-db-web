@@ -16,27 +16,26 @@
 
         <div class="container">
 
-            <h1>LOGIN PAGE</h1>
+            <h1>REGISTRATION PAGE</h1>
             <#if operation_result == "Failed" >
-            <p>LOGIN_AUTH_FAILED</p>
+            <p>REGISTRATION FAILED</p>
             </#if>
             <form id="loginForm" method="post">
                 <table>
                     <tr>
-                        <td><label>User Name :</label></td>
-                        <td><input type="text" name="username" placeholder="User Name" value="" required><br></td>
+                        <td><label>User Name : </label></td>
+                        <td><input type="text" name="username" placeholder="User Name" value="" required></td>
                     </tr>
                     <tr>
-                        <td><label>Password :</label></td>
-                        <td><input type="password" name="password" placeholder="Passowrd" value="" required><br></td>
+                        <td><label>Password : </label></td>
+                        <td><input type="password" name="password" placeholder="Passowrd" value="" required></td>
                     </tr>
                     <tr>
-                        <td><input type="submit" value="Login"></td>
+                        <td><input type="submit" value="Register"></td>
                     </tr>
-                </table>
             </form>
         </div>
-
         <#include "footer.ftl">
+
     </body>
 </html>

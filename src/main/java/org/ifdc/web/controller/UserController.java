@@ -10,6 +10,17 @@ public class UserController {
 //    private static final String hashedpass = getHashedPassword();
     // Authenticate the user by hashing the inputted password using the stored salt,
     // then comparing the generated hashed password to the stored hashed password
+    public static boolean register(String username, String password) {
+        if (username.isEmpty() || password.isEmpty()) {
+            return false;
+        }
+        if (UserDAO.getUserByUsername(username) != null) {
+            return false;
+        } else {
+            return UserDAO.registerUser(new User(username, password));
+        }
+    }
+    
     public static boolean authenticate(String username, String password) {
         if (username.isEmpty() || password.isEmpty()) {
             return false;

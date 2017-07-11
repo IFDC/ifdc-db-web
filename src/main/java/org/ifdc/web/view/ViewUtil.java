@@ -1,6 +1,7 @@
-package org.ifdc.web.util;
+package org.ifdc.web.view;
 
 import java.util.Map;
+import org.ifdc.web.util.Path;
 import static org.ifdc.web.Main.LOG;
 import spark.ModelAndView;
 import spark.Request;
@@ -11,6 +12,9 @@ public class ViewUtil {
     public static void setCommonParam(Request request, Map<String, Object> attributes) {
 //        model.put("msg", new MessageBundle(getSessionLocale(request)));
         attributes.put("currentUser", getSessionVar(request, "currentUser"));
+        if (!attributes.containsKey("operation_result")) {
+            attributes.put("operation_result", "");
+        }
         attributes.put("WebPath", Path.Web.class); // Access application URLs from templates
 //        return strictVelocityEngine().render(new ModelAndView(model, templatePath));
     }
@@ -24,10 +28,13 @@ public class ViewUtil {
 
     }
 
+    public static String getRegisterPage(Request request, Map<String, Object> attributes) {
+        setCommonParam(request, attributes);
+        return new FreeMarkerEngine().render(new ModelAndView(attributes, Path.Template.REGISTER));
+    }
+
     public static String getLoginPage(Request request, Map<String, Object> attributes) {
         setCommonParam(request, attributes);
-        fillDefValue(attributes,
-                new String[]{"authentication"});
         return new FreeMarkerEngine().render(new ModelAndView(attributes, Path.Template.LOGIN));
     }
 
