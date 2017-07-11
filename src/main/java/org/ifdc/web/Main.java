@@ -2,6 +2,10 @@ package org.ifdc.web;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import org.ifdc.web.controller.ActivityPageController;
 import org.ifdc.web.controller.IndicatorPageController;
 import org.ifdc.web.controller.PageController;
@@ -94,5 +98,13 @@ public class Main {
             e.printStackTrace();
         }
         System.out.println("System start @ " + port);
+        if(Desktop.isDesktopSupported())
+        {
+            try {
+                Desktop.getDesktop().browse(new URI("http://localhost:" + port + "/"));
+            } catch (IOException | URISyntaxException ex) {
+                LOG.warn(ex.getMessage());
+            }
+        }
     }
 }
